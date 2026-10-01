@@ -3,12 +3,16 @@ const cors = require('cors');
 const vehicleRentalRouter = require('./routes/vehicleRentalRouter');
 const { unknownEndpoint, errorHandler, requestLogger } = require('./middleware/customMiddleware');
 
+const connectDB = require("./config/db")
+
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
+
+connectDB();
 
 // Routes
 app.use('/api/vehicles', vehicleRentalRouter);
