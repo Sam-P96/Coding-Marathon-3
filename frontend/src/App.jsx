@@ -5,6 +5,8 @@ import Home from "./pages/HomePage";
 import AddVehicleRentalPage from "./pages/AddVehicleRentalPage";
 import Navbar from "./components/Navbar";
 import NotFoundPage from "./pages/NotFoundPage";
+import VehicleRentalPage from "./pages/VehicleRentalPage";
+import EditVehicleRentalPage from "./pages/EditVehicleRentalPage" 
 
 const App = () => {
   return (
@@ -16,6 +18,8 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/add-rental" element={<AddVehicleRentalPage />} />
             <Route path="*" element={<NotFoundPage />} />
+            <Route path="/vehicles/:id" element={<VehicleRentalPage />} />
+            <Route path="/vehicles/edit/:id" element={<EditVehicleRentalPage />} />
           </Routes>
         </div>
       </BrowserRouter>
