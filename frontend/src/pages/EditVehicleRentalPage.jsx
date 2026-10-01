@@ -21,6 +21,9 @@ const EditVehicleRentalPage = () => {
   const [bookingDeadline, setBookingDeadline] = useState('');
   const [insurancePolicy, setInsurancePolicy] = useState('');
 
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = user ? user.token : null;
+
   useEffect(() => {
     const fetchVehicle = async () => {
       try {

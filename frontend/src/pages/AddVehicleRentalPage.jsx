@@ -64,7 +64,7 @@ const AddVehicleRentalPage = () => {
     };
 
     console.log(data);
-    const success = await addVehicle(newProduct);
+    const success = await addVehicle(data);
     if (success) {
       console.log('Product Added Successfully');
       navigate('/');
