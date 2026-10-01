@@ -15,6 +15,25 @@ const AddVehicleRentalPage = () => {
   const [bookingDeadline, setBookingDeadline] = useState('');
   const [insurancePolicy, setInsurancePolicy] = useState('');
 
+  const addVehicle = async (newVehicle) => {
+    try {
+      const res = await fetch('/api/vehicles', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newVehicle),
+      });
+      if (!res.ok) {
+        throw new Error('Failed to add product');
+      }
+      return true;
+    } catch (error) {
+      console.error('Error adding product:', error);
+      return false;
+    }
+  };
+
   const submitForm = (e) => {
     e.preventDefault();
     const data = {
@@ -39,6 +58,7 @@ const AddVehicleRentalPage = () => {
     };
 
     console.log(data);
+    addVehicle(data);
   };
 
   return (
