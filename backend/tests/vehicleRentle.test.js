@@ -154,6 +154,7 @@ describe("VehicleRental Controller", () => {
   // Test DELETE /api/vehicleRentals/:id
   it("should delete one vehicleRental by ID when DELETE /api/vehicleRentals/:id is called", async () => {
     const vehicleRental = await VehicleRental.findOne();
+    console.log(vehicleRental._id);
     await api.delete(`/api/vehicleRentals/${vehicleRental._id}`).expect(204);
 
     const deletedVehicleRentalCheck = await VehicleRental.findById(vehicleRental._id);
