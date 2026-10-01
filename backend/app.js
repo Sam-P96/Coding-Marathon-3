@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(requestLogger);
 
 // Routes
-app.use('/api/vehicleRentals', vehicleRentalRouter);
+app.use('/api/vehicles', vehicleRentalRouter);
 
 // Error handling
 app.use(unknownEndpoint);

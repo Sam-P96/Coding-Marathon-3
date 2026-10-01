@@ -4,7 +4,7 @@ const VehicleRentalListing = ( {vehicle} ) => {
   return (
     <div className="rental-preview">
       <Link to={`/vehicles/${vehicle.id}`}>
-      <h2>Vehicle Model: {vehicle.model}</h2>      
+      <h2>Vehicle Model: {vehicle.vehicleModel}</h2>      
       </Link>
       <p>Category: {vehicle.category}</p>
       <p>Daily Price: {vehicle.dailyPrice}</p>

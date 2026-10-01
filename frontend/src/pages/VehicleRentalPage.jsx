@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import VehicleRentalListing from "../components/VehicleRentalListing";
 
 const VehicleRentalPage = () => {
 
@@ -36,10 +35,24 @@ const VehicleRentalPage = () => {
   return (
     <div className="rental-preview">
       <h2>Vehicle Rental Details</h2>
-      <VehicleRentalListing vehicle={vehicle}/>
+      <h3>Vehicle Model: {vehicle.vehicleModel}</h3>
+      <p>Category: {vehicle.category}</p>
+      <p>Description: {vehicle.description}</p>
+      <p>Listing Date: {vehicle.listingDate}</p>
+      <p>Availability: {vehicle.availabilityStatus}</p>
+      <p>Booking Deadline: {vehicle.bookingDeadline}</p>
+      <p>Insurance Poilicy: {vehicle.insurancePoilicy}</p>
+      <h3>Agency</h3>
+      <p>Name: {vehicle.agency.name}</p>
+      <p>Contact Email: {vehicle.agency.contactEmail}</p>
+      <p>Fleet Size: {vehicle.agency.fleetSize}</p>
+      <h3>Location</h3>
+      <p>City: {vehicle.location.city}</p>
+      <p>State: {vehicle.location.state}</p>
+
 
       <button onClick={()=> handleGoHome()}>Go Home</button>
-      <button onClick={() => navigate('/')}>Edit</button>
+      <button onClick={() => navigate(`/vehicles/edit/${vehicle.id}`)}>Edit</button>
     </div>
   );
 };

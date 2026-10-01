@@ -1,8 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const EditVehicleRentalPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+
 
   const [vehicleModel, setVehicleModel] = useState('');
   const [category, setCategory] = useState('');
@@ -23,7 +27,7 @@ const EditVehicleRentalPage = () => {
       try {
         const res = await fetch(`/api/vehicles/${id}`);
         const data = await res.json();
-        setVehicleModel(data.productName);
+        setVehicleModel(data.vehicleModel);
         setCategory(data.category);
         setDescription(data.description);
 
@@ -90,6 +94,7 @@ const EditVehicleRentalPage = () => {
 
     console.log(data);
     updateVehicle(data);
+    navigate("/")
   };
 
   return (
@@ -172,3 +177,4 @@ const EditVehicleRentalPage = () => {
 };
 
 export default EditVehicleRentalPage;
+ 
