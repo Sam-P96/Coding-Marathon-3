@@ -7,7 +7,6 @@ const EditVehicleRentalPage = () => {
 
   const [loading, setLoading] = useState(true);
 
-
   const [vehicleModel, setVehicleModel] = useState('');
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
@@ -56,6 +55,7 @@ const EditVehicleRentalPage = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(vehicle),
       });
@@ -94,7 +94,7 @@ const EditVehicleRentalPage = () => {
 
     console.log(data);
     updateVehicle(data);
-    navigate("/")
+    navigate('/');
   };
 
   return (
@@ -177,4 +177,3 @@ const EditVehicleRentalPage = () => {
 };
 
 export default EditVehicleRentalPage;
- 
