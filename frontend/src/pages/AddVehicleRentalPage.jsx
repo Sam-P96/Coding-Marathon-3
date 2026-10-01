@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AddVehicleRentalPage = () => {
+
+  const navigate = useNavigate();
   const [vehicleModel, setVehicleModel] = useState('');
-  const [category, setCategory] = useState('');
+  const [category, setCategory] = useState('default');
   const [description, setDescription] = useState('');
   const [name, setName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
@@ -11,7 +14,7 @@ const AddVehicleRentalPage = () => {
   const [state, setState] = useState('');
   const [dailyPrice, setDailyPrice] = useState('');
   // const[listingDate,setListingDate]=useState("")
-  const [availabilityStatus, setAvailabilityStatus] = useState('');
+  const [availabilityStatus, setAvailabilityStatus] = useState('available');
   const [bookingDeadline, setBookingDeadline] = useState('');
   const [insurancePolicy, setInsurancePolicy] = useState('');
 
@@ -25,11 +28,11 @@ const AddVehicleRentalPage = () => {
         body: JSON.stringify(newVehicle),
       });
       if (!res.ok) {
-        throw new Error('Failed to add product');
+        throw new Error('Failed to add Vehicle');
       }
       return true;
     } catch (error) {
-      console.error('Error adding product:', error);
+      console.error('Error adding vehicle:', error);
       return false;
     }
   };
@@ -59,6 +62,7 @@ const AddVehicleRentalPage = () => {
 
     console.log(data);
     addVehicle(data);
+    navigate("/")
   };
 
   return (
