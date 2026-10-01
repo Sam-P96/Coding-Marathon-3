@@ -1,19 +1,39 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-const VehicleRentalPage = () => {
-
+const VehicleRentalPage = ({ isAuthenticated }) => {
   const [vehicle, setVehicle] = useState(null);
-  const {id} = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = user ? user.token : null;
 
+  const deleteVehicle = async (id) => {
+    try {
+      const res = await fetch(`/api/vehicles/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      console.log(res);
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
         const res = await fetch(`/api/vehicles/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch vehicle");
+        if (!res.ok) throw new Error('Failed to fetch vehicle');
         const data = await res.json();
         if (data) setVehicle(data);
       } catch (err) {
@@ -23,14 +43,14 @@ const VehicleRentalPage = () => {
       }
     };
     fetchVehicle();
-  }, [id] )
+  }, [id]);
 
   const handleGoHome = () => {
-    navigate("/")
-  }
+    navigate('/');
+  };
 
-  if (loading) return <>Loading....</>
-  if (error) return <>Something went wrong: {error}</>
+  if (loading) return <>Loading....</>;
+  if (error) return <>Something went wrong: {error}</>;
 
   return (
     <div className="rental-preview">
@@ -50,12 +70,16 @@ const VehicleRentalPage = () => {
       <p>City: {vehicle.location.city}</p>
       <p>State: {vehicle.location.state}</p>
 
+      <button onClick={() => handleGoHome()}>Go Home</button>
 
-      <button onClick={()=> handleGoHome()}>Go Home</button>
-      <button onClick={() => navigate(`/vehicles/edit/${vehicle.id}`)}>Edit</button>
+      {isAuthenticated && (
+        <>
+          <button onClick={() => navigate(`/vehicles/edit/${vehicle.id}`)}>Edit</button>
+          <button onClick={() => deleteVehicle(id)}>Delete</button>
+        </>
+      )}
     </div>
   );
 };
 
 export default VehicleRentalPage;
-

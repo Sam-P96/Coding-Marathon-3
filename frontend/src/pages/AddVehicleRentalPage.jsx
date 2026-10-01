@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AddVehicleRentalPage = () => {
-
   const navigate = useNavigate();
   const [vehicleModel, setVehicleModel] = useState('');
   const [category, setCategory] = useState('default');
@@ -18,12 +17,16 @@ const AddVehicleRentalPage = () => {
   const [bookingDeadline, setBookingDeadline] = useState('');
   const [insurancePolicy, setInsurancePolicy] = useState('');
 
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = user ? user.token : null;
+
   const addVehicle = async (newVehicle) => {
     try {
       const res = await fetch('/api/vehicles', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(newVehicle),
       });
@@ -37,7 +40,7 @@ const AddVehicleRentalPage = () => {
     }
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     const data = {
       vehicleModel,
@@ -61,8 +64,13 @@ const AddVehicleRentalPage = () => {
     };
 
     console.log(data);
-    addVehicle(data);
-    navigate("/")
+    const success = await addVehicle(data);
+    if (success) {
+      console.log('Product Added Successfully');
+      navigate('/');
+    } else {
+      console.error('Failed to add the product');
+    }
   };
 
   return (
