@@ -72,7 +72,7 @@ const EditVehicleRentalPage = () => {
     return true;
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
     const data = {
       vehicleModel,
@@ -96,8 +96,12 @@ const EditVehicleRentalPage = () => {
     };
 
     console.log(data);
-    updateVehicle(data);
-    navigate('/');
+    const success = await updateVehicle(data);
+    if (success) {
+      navigate('/');
+    } else {
+      console.log('failed');
+    }
   };
 
   return (
