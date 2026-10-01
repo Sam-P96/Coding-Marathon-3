@@ -1,8 +1,6 @@
 const VehicleRental = require('../models/vehicleRentalModel');
 const mongoose = require('mongoose');
 
-// CHECK THE SCHEMA!!
-
 // GET /api/vehicleRentals
 const getAllVehicleRentals = async (req, res) => {
   try {
@@ -15,9 +13,9 @@ const getAllVehicleRentals = async (req, res) => {
 
 // POST /api/vehicleRentals
 const createVehicleRental = async (req, res) => {
-  const { vehicleModel, category, description, agency, location, dailyPrice, listingDate, availabilityStatus, bookingDeadline, insurancePolicy } = req.body;
+  const { title, category, description, price, stockQuantity, supplier } = req.body;
   try {
-    const vehicleRental = await VehicleRental.create({ vehicleModel, category, description, agency, location, dailyPrice, listingDate, availabilityStatus, bookingDeadline, insurancePolicy });
+    const vehicleRental = await VehicleRental.create({ title, category, description, price, stockQuantity, supplier });
     res.status(201).json(vehicleRental);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -43,23 +41,7 @@ const getVehicleRentalById = async (req, res) => {
 
 // PUT /api/vehicleRentals/:vehicleRentalId
 const updateVehicleRental = async (req, res) => {
-  const { vehicleRentalId } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(vehicleRentalId)) {
-    return res.status(404).json({ error: 'VehicleRental not found' });
-  }
-  try {
-    const vehicleRental = await VehicleRental.findOneAndUpdate(
-      { _id: vehicleRentalId },
-      { ...req.body },
-      { new: true, returnDocument: 'after' }
-    );
-    if (!vehicleRental) {
-      return res.status(404).json({ error: 'VehicleRental not found' });
-    }
-    res.status(200).json(vehicleRental);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+  res.send("updateVehicleRental");
 };
 
 // DELETE /api/vehicleRentals/:vehicleRentalId
