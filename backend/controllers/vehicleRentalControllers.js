@@ -85,5 +85,5 @@ module.exports = {
   getVehicleRentalById,
   updateVehicleRental,
   deleteVehicleRental,
-};
+}, VehicleRental;
 
