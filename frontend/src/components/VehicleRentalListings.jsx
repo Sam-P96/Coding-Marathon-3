@@ -1,10 +1,14 @@
 import VehicleRentalListing from "./VehicleRentalListing";
-
-const VehicleRentalListings = () => {
+const VehicleRentalListings = ({vehicles}) => {
+  
   return (
     <div className="rental-list">
-      <VehicleRentalListing />
+      {vehicles.map((v) => (
+        <VehicleRentalListing key={v.id} vehicle={v}/>
+      ))}
     </div>
+
+    
   );
 };
 

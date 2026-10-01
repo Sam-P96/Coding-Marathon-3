@@ -1,10 +1,14 @@
-const VehicleRentalListing = () => {
+import { Link } from "react-router-dom"
+
+const VehicleRentalListing = ( {vehicle} ) => {
   return (
     <div className="rental-preview">
-      <h2>Vehicle Model</h2>
-      <p>Category: Economy</p>
-      <p>Daily Price: $0.00</p>
-      <p>Status: Available</p>
+      <Link to={`/vehicles/${vehicle.id}`}>
+      <h2>Vehicle Model: {vehicle.model}</h2>      
+      </Link>
+      <p>Category: {vehicle.category}</p>
+      <p>Daily Price: {vehicle.dailyPrice}</p>
+      <p>Status: {vehicle.availabilityStatus}</p>
     </div>
   );
 };
