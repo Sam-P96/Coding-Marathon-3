@@ -3,6 +3,8 @@ const cors = require('cors');
 const vehicleRentalRouter = require('./routes/vehicleRentalRouter');
 const userRouter = require('./routes/userRouter');
 const { unknownEndpoint, errorHandler, requestLogger } = require('./middleware/customMiddleware');
+const swaggerUI = require('swagger-ui-express');
+const swaggerSpec = require('./swagger.json'); // Assuming swagger.json is in the same directory
 
 const connectDB = require('./config/db');
 
@@ -18,6 +20,7 @@ connectDB();
 // Routes
 app.use('/api/vehicles', vehicleRentalRouter);
 app.use('/api/users', userRouter);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(express.static('view'));
 
 // Error handling

@@ -1,0 +1,689 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Vehicle Rental API",
+    "description": "API documentation for User management and Vehicle Rental services.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Development Server"
+    }
+  ],
+  "paths": {
+    "/api/users/signup": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignupInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields, user already exists, or invalid data"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "summary": "Authenticate user & get JWT",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid credentials or missing fields"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Get all users",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a user directly (Internal/Deprecated)",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/api/users/{userId}": {
+      "get": {
+        "summary": "Get user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "MongoDB ObjectId of the user",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update user details",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete user by ID",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User deleted successfully"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/vehicles": {
+      "get": {
+        "summary": "Get all vehicle rentals",
+        "tags": ["Vehicles"],
+        "responses": {
+          "200": {
+            "description": "List of vehicle rentals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleRental"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new vehicle rental",
+        "tags": ["Vehicles"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleRentalInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Vehicle rental created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleRental"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Unauthorized token required"
+          }
+        }
+      }
+    },
+    "/api/vehicles/{vehicleRentalId}": {
+      "get": {
+        "summary": "Get vehicle rental by ID",
+        "tags": ["Vehicles"],
+        "parameters": [
+          {
+            "name": "vehicleRentalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle rental details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleRental"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle rental not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a vehicle rental",
+        "tags": ["Vehicles"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "vehicleRentalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle rental updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleRental"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "401": {
+            "description": "Unauthorized token required"
+          },
+          "404": {
+            "description": "Vehicle rental not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a vehicle rental",
+        "tags": ["Vehicles"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "vehicleRentalId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Vehicle rental deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized token required"
+          },
+          "404": {
+            "description": "Vehicle rental not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "LoginInput": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "john_doe"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "john_doe"
+          },
+          "token": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "required": ["licenseExpiryDate", "city", "yearsOfExperience"],
+        "properties": {
+          "licenseExpiryDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2028-12-31T00:00:00.000Z"
+          },
+          "city": {
+            "type": "string",
+            "example": "Helsinki"
+          },
+          "yearsOfExperience": {
+            "type": "integer",
+            "example": 5
+          }
+        }
+      },
+      "UserInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "username",
+          "password",
+          "phone_number",
+          "licenseNumber",
+          "date_of_birth",
+          "address"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "username": {
+            "type": "string",
+            "example": "john_doe"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          },
+          "phone_number": {
+            "type": "string",
+            "example": "+358401234567"
+          },
+          "licenseNumber": {
+            "type": "string",
+            "example": "FIN1234567"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date-time",
+            "example": "1995-05-15T00:00:00.000Z"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "SignupInput": {
+        "$ref": "#/components/schemas/UserInput"
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "60d5ecb8b5c9c2234c8e4321"
+          },
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "phone_number": {
+            "type": "string"
+          },
+          "licenseNumber": {
+            "type": "string"
+          },
+          "date_of_birth": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Agency": {
+        "type": "object",
+        "required": ["name", "contactEmail"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "FastRental Ltd"
+          },
+          "contactEmail": {
+            "type": "string",
+            "example": "info@fastrental.com"
+          },
+          "fleetSize": {
+            "type": "integer",
+            "example": 25
+          }
+        }
+      },
+      "Location": {
+        "type": "object",
+        "required": ["city", "state"],
+        "properties": {
+          "city": {
+            "type": "string",
+            "example": "Helsinki"
+          },
+          "state": {
+            "type": "string",
+            "example": "Uusimaa"
+          }
+        }
+      },
+      "VehicleRentalInput": {
+        "type": "object",
+        "required": [
+          "vehicleModel",
+          "category",
+          "description",
+          "agency",
+          "location",
+          "dailyPrice",
+          "insurancePolicy"
+        ],
+        "properties": {
+          "vehicleModel": {
+            "type": "string",
+            "example": "Tesla Model 3"
+          },
+          "category": {
+            "type": "string",
+            "example": "Electric"
+          },
+          "description": {
+            "type": "string",
+            "example": "Clean electric sedan with autopilot."
+          },
+          "agency": {
+            "$ref": "#/components/schemas/Agency"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "dailyPrice": {
+            "type": "number",
+            "example": 85.5
+          },
+          "listingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "availabilityStatus": {
+            "type": "string",
+            "enum": ["available", "rented", "maintenance"],
+            "default": "available"
+          },
+          "bookingDeadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "insurancePolicy": {
+            "type": "string",
+            "example": "Full Coverage Standard"
+          }
+        }
+      },
+      "VehicleRental": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "60d5ecb8b5c9c2234c8e4322"
+          },
+          "_id": {
+            "type": "string",
+            "example": "60d5ecb8b5c9c2234c8e4322"
+          },
+          "vehicleModel": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "agency": {
+            "$ref": "#/components/schemas/Agency"
+          },
+          "location": {
+            "$ref": "#/components/schemas/Location"
+          },
+          "dailyPrice": {
+            "type": "number"
+          },
+          "listingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "availabilityStatus": {
+            "type": "string"
+          },
+          "bookingDeadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "insurancePolicy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
