@@ -8,14 +8,15 @@ const {
   deleteVehicleRental,
 } = require('../controllers/vehicleRentalControllers');
 
+const requireAuth = require('../middleware/requireAuth');
+
 // GET /api/vehicleRentals
 router.get('/', getAllVehicleRentals);
 
-// POST /api/vehicleRentals
-router.post('/', createVehicleRental);
-
 // GET /api/vehicleRentals/:vehicleRentalId
 router.get('/:vehicleRentalId', getVehicleRentalById);
+
+router.use(requireAuth);
 
 // PUT /api/vehicleRentals/:vehicleRentalId
 router.put('/:vehicleRentalId', updateVehicleRental);
@@ -23,5 +24,6 @@ router.put('/:vehicleRentalId', updateVehicleRental);
 // DELETE /api/vehicleRentals/:vehicleRentalId
 router.delete('/:vehicleRentalId', deleteVehicleRental);
 
+// POST /api/vehicleRentals
+router.post('/', createVehicleRental);
 module.exports = router;
-
